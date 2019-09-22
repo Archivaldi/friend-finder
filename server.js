@@ -1,14 +1,16 @@
-var express = require("express");
-var app = express();
+const express = require("express");
+const app = express();
 
 //add dotenv package for hiding private data
 require("dotenv").config();
 const keys = require("./keys.js");
 
-var mysql = require("mysql");
+const path = require("path");
+
+const mysql = require("mysql");
 
 //hiding private data 
-var connection = mysql.createConnection(keys.data);
+const connection = mysql.createConnection(keys.data);
 
 // Creates the connection with the server and loads the product data upon a successful connection
 connection.connect(function (err) {
@@ -17,6 +19,10 @@ connection.connect(function (err) {
     }
     console.log("Database connected");
   });
+
+  app.get("/", function(req,res){
+    res.send("Hello World!");  
+})
 
 app.listen(3000, function(){
     console.log("Server runs");
