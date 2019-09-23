@@ -1,5 +1,6 @@
 const express = require("express");
 const app = express();
+app.set("view engine", "ejs");
 
 //add dotenv package for hiding private data
 require("dotenv").config();
@@ -75,11 +76,13 @@ connection.connect(function (err) {
 
 
 app.get("/", function(req,res){
-    res.sendFile(path.join(__dirname, 'public/index.html')); 
+    res.render("index");
 })
 
 app.get("/survey", function(req,res){
-    res.sendFile(path.join(__dirname, 'public/survey.html'));     
+    connection.query("SELECT * FROM questions", function (err, response){
+        res.render("survey", {res: response}); 
+    })
 })
 
 app.get("/api/friends", function(req,res){
