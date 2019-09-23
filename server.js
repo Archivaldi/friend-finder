@@ -57,11 +57,17 @@ connection.connect(function (err) {
                     }
             }
         }
+
+        deleteIDfromFriend();
     })
 
-        //console.log(friends);
 }
-  //}
+
+    function deleteIDfromFriend () {
+        for (var i = 0; i < friends.length; i++){
+            delete friends[i].friend_id;
+        }
+    }
 
   function loadFriends() {
     // Selects all of the data from the MySQL products table
