@@ -20,7 +20,7 @@ connection.connect(function (err) {
     console.log("Database connected");
   });
 
-  app.get("/", function(req,res){
+app.get("/", function(req,res){
     res.send("Hello World!");  
 })
 
