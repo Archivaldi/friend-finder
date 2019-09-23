@@ -4,20 +4,21 @@ USE shema;
 
 CREATE TABLE questions(
     question_id INT NOT NULL AUTO_INCREMENT,
+    question VARCHAR(200),
     PRIMARY KEY (question_id)
 );
 
 CREATE TABLE friends(
     friend_id INT NOT NULL AUTO_INCREMENT,
     friend_name VARCHAR(101),
-    picture_link VARCHAR(999),
+    picture_link VARCHAR(200),
     PRIMARY KEY (friend_id)
 );
 
 CREATE TABLE scores (
     friend_id INT NOT NULL,
     question_id INT NOT NULL,
-    score INT,
+    score INT NOT NULL,
     FOREIGN KEY (friend_id) REFERENCES friends(friend_id),
     FOREIGN KEY (question_id) REFERENCES questions(question_id)
 );
@@ -43,3 +44,5 @@ INSERT INTO friends (friend_name, picture_link) VALUES
 ("Concepcion Lippincott", "https://www.abc.net.au/news/image/10585188-3x2-700x467.jpg"),
 ("Rossie Maitland", "https://cdn.theatlantic.com/assets/media/img/mt/2019/07/lickcat/lead_720_405.jpg?mod=1564421316"),
 ("Shaunda Cao", "https://d17fnq9dkz9hgj.cloudfront.net/uploads/2012/11/100901720-cat-adoption-first-30-days-632x475.jpg");
+
+INSERT INTO scores (friend_id, question_id, score) VALUES (1,1,3), (1,2,2), (1,3,5), (1,4,2), (1,5,5), (1,6,5), (1,7,1), (1,8,3), (1,9,4), (1,10,5);
