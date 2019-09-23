@@ -24,13 +24,6 @@ connection.connect(function (err) {
     loadFriends();
   });  
 
-//   function takeScores(){
-//       for (var i = 0; i < friends.length; i++){
-//           console.log(friends[RowDataPacket][i].friend_name);
-//        }
-//   }
-
-
   function upgradeFriends(arr){
 
       for (var i = 0; i < arr.length; i++){
@@ -82,12 +75,20 @@ connection.connect(function (err) {
 
 
 app.get("/", function(req,res){
-    res.send("Hello World!");  
+    res.sendFile(path.join(__dirname, 'public/index.html')); 
+})
+
+app.get("/survey", function(req,res){
+    res.sendFile(path.join(__dirname, 'public/survey.html'));     
 })
 
 app.get("/api/friends", function(req,res){
     res.json(friends);
-})
+});
+
+app.post("/api/friends", function(req,res){
+
+});
 
 app.listen(3000, function(){
     console.log("Server runs");
