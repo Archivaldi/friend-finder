@@ -6,10 +6,13 @@ app.set("view engine", "ejs");
 require("dotenv").config();
 const keys = require("./keys.js");
 
+//path package
 const path = require("path");
 
+//mysql package
 const mysql = require("mysql");
 
+//create array with friends
 var friends = [];
 
 //hiding private data 
@@ -25,6 +28,20 @@ connection.connect(function (err) {
     loadFriends();
   });  
 
+  function loadFriends() {
+    // Selects data from the MySQL database 
+    connection.query("SELECT friend_name, picture_link, friend_id FROM friends", function (err, res) {
+      if (err) {
+        console.log(err)
+      };
+
+     upgradeFriends(res);
+
+    });
+};
+
+
+//upadte friends array with friends from database
   function upgradeFriends(arr){
 
       for (var i = 0; i < arr.length; i++){
@@ -38,10 +55,7 @@ connection.connect(function (err) {
             takeScores();
       };
 
-
-      //console.log(friends);
-     // takeScores();
-
+      //put scores into every friend object
   function takeScores(){
       connection.query("SELECT score, friend_id FROM scores", function(err,res){
             for (var p = 0; p < friends.length; p++){
@@ -56,35 +70,27 @@ connection.connect(function (err) {
     })
 
 }
-
+    //delete friend_id from friend object
     function deleteIDfromFriend () {
         for (var i = 0; i < friends.length; i++){
             delete friends[i].friend_id;
         }
     }
 
-  function loadFriends() {
-    // Selects all of the data from the MySQL products table
-    connection.query("SELECT friend_name, picture_link, friend_id FROM friends", function (err, res) {
-      if (err) {
-        console.log(err)
-      }
-     upgradeFriends(res);
 
-    });
-}
-
-
+    //create main route
 app.get("/", function(req,res){
-    res.render("index");
+    res.sendFile(path.join(__dirname, 'views/index.html'));
 })
 
+    //survey page
 app.get("/survey", function(req,res){
     connection.query("SELECT * FROM questions", function (err, response){
         res.render("survey", {res: response}); 
     })
 })
 
+    //showing friends array like json file
 app.get("/api/friends", function(req,res){
     res.json(friends);
 });
@@ -93,6 +99,7 @@ app.post("/api/friends", function(req,res){
 
 });
 
+    //create server
 app.listen(3000, function(){
     console.log("Server runs");
 })
