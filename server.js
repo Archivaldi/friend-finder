@@ -20,7 +20,7 @@ const connection = mysql.createConnection(keys.data);
 
 var bodyParser = require("body-parser");
 
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.urlencoded({ extended: true }));
 
 
 
@@ -67,14 +67,13 @@ function takeScores() {
             for (var i = 0; i < res.length; i++) {
                 if (friends[p].friend_id === res[i].friend_id) {
                     friends[p].scores.push(res[i].score);
-                }
-            }
-        }
-
+                };
+            };
+        };
         deleteIDfromFriend();
-    })
+    });
+};
 
-}
 //delete friend_id from friend object
 function deleteIDfromFriend() {
     for (var i = 0; i < friends.length; i++) {
@@ -115,22 +114,48 @@ app.post("/api/friends", function (req, res) {
         parseInt(req.body.question9),
         parseInt(req.body.question10),
     ];
-    connection.query("INSERT INTO friends(friend_name, picture_link) VALUES (?, ?)", [name, link], function(err, res){
+    var newUser = {
+        name: name,
+        link: link,
+        scores: scores
+    };
+    var userScores = newUser.scores;
+
+    connection.query("INSERT INTO friends(friend_name, picture_link) VALUES (?, ?)", [name, link], function (err, res) {
         takeNewFiendId(name);
         // insertScores(scores);
-    })
+    });
     function takeNewFiendId(str) {
-        connection.query("SELECT friend_id FROM friends WHERE friend_name = ?",[str], function(err,res){
+        connection.query("SELECT friend_id FROM friends WHERE friend_name = ?", [str], function (err, res) {
             insertScores(res[0].friend_id);
-            console.log(res[0].friend_id);
-        })
-    }
+        });
+    };
 
-    function insertScores(num){
-    connection.query("INSERT INTO scores (friend_id, question_id, score) VALUES (?,1,?), (?,2,?), (?,1,?), (?,1,?), (?,1,?), (?,1,?), (?,1,?), (?,1,?), (?,1,?), (?,1,?)"), [num,scores[0],num,scores[1],num,scores[2],num,scores[3],num,scores[4],num,scores[5],num,scores[6],num,scores[7],num,scores[8],num,scores[9]], function(err,res){
-        console.log("DONE!");
-    }
-}
+    function insertScores(num) {
+        connection.query("INSERT INTO scores (friend_id, question_id, score) VALUES (?,1,?), (?,2,?), (?,3,?), (?,4,?), (?,5,?), (?,6,?), (?,7,?), (?,8,?), (?,9,?), (?,10,?)", [num, scores[0], num, scores[1], num, scores[2], num, scores[3], num, scores[4], num, scores[5], num, scores[6], num, scores[7], num, scores[8], num, scores[9]], function (err, res) {
+            takeDiff();
+        });
+};
+
+    var bestMatch = {
+        name: '',
+        photo: '',
+        friendDifference: Infinity
+    };
+
+    var totalDifference;
+
+    function takeDiff(){
+        for (var i = 0; i < friends.length; i++){
+            for (var p = 0; p < friends[i].scores; p++){
+                var sum = 0;    
+                    if (newUser.scores[p] !== friends[i].scores[p]){
+                        sum += Math.abs(newUser.scores[p] - friends[i].scores[p]);
+                    }
+                }
+            };
+
+        };
 });
 
 //create server
