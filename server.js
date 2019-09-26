@@ -46,7 +46,7 @@ app.get("/survey", function (req, res) {
 
 //showing friends array like json file
 app.get("/api/friends", function (req, res) {
-    connection.query("SELECT f.friend_name, GROUP_CONCAT(s.score) AS scores FROM scores s JOIN friends f USING (friend_id) GROUP BY friend_id", function (err, response){
+    connection.query("SELECT f.friend_name, f.picture_link, GROUP_CONCAT(s.score) AS scores FROM scores s JOIN friends f USING (friend_id) GROUP BY friend_id", function (err, response){
         var friends = [];
         for (var i = 0; i < response.length; i++){
             var friend = {};
