@@ -30,57 +30,7 @@ connection.connect(function (err) {
         console.error("error connecting: " + err.stack);
     }
     console.log("Database connected");
-    loadFriends();
 });
-
-// Selects data from the MySQL database 
-function loadFriends() {
-    connection.query("SELECT friend_name, picture_link, friend_id FROM friends", function (err, res) {
-        if (err) {
-            console.log(err)
-        };
-
-        upgradeFriends(res);
-
-    });
-};
-
-
-//upadte friends array with friends from database
-function upgradeFriends(arr) {
-
-    for (var i = 0; i < arr.length; i++) {
-        friends.push({
-            name: arr[i].friend_name,
-            photo: arr[i].picture_link,
-            friend_id: arr[i].friend_id,
-            scores: []
-        });
-    }
-    takeScores();
-};
-
-//put scores into every friend object
-function takeScores() {
-    connection.query("SELECT score, friend_id FROM scores", function (err, res) {
-        for (var p = 0; p < friends.length; p++) {
-            for (var i = 0; i < res.length; i++) {
-                if (friends[p].friend_id === res[i].friend_id) {
-                    friends[p].scores.push(res[i].score);
-                };
-            };
-        };
-        deleteIDfromFriend();
-    });
-};
-
-//delete friend_id from friend object
-function deleteIDfromFriend() {
-    for (var i = 0; i < friends.length; i++) {
-        delete friends[i].friend_id;
-    }
-}
-
 
 //create main route
 app.get("/", function (req, res) {
@@ -96,7 +46,21 @@ app.get("/survey", function (req, res) {
 
 //showing friends array like json file
 app.get("/api/friends", function (req, res) {
-    res.json(friends);
+    connection.query("SELECT f.friend_name, GROUP_CONCAT(s.score) AS scores FROM scores s JOIN friends f USING (friend_id) GROUP BY friend_id", function (err, response){
+        var friends = [];
+        for (var i = 0; i < response.length; i++){
+            var friend = {};
+            friend.name = response[i].friend_name;
+            friend.link = response[i].picture_link;
+            friend.scores = [];
+            for (var p = 0; p < response[i].scores.length; p ++){
+                if (response[i].scores[p] != ",")
+                friend.scores.push(response[i].scores[p]);
+            }
+            friends.push(friend);
+        }
+        res.json(friends);
+    })
 });
 
 app.post("/api/friends", function (req, res) {
@@ -119,21 +83,23 @@ app.post("/api/friends", function (req, res) {
         link: link,
         scores: scores
     };
-    var userScores = newUser.scores;
+    
+    console.log(newUser);
 
     connection.query("INSERT INTO friends(friend_name, picture_link) VALUES (?, ?)", [name, link], function (err, res) {
-        takeNewFiendId(name);
+        takeNewFiendId(name, link);
         // insertScores(scores);
     });
-    function takeNewFiendId(str) {
-        connection.query("SELECT friend_id FROM friends WHERE friend_name = ?", [str], function (err, res) {
+    function takeNewFiendId(str,link) {
+        connection.query("SELECT friend_id FROM friends WHERE friend_name = ? AND picture_link=?", [str,link], function (err, res) {
             insertScores(res[0].friend_id);
         });
     };
 
     function insertScores(num) {
         connection.query("INSERT INTO scores (friend_id, question_id, score) VALUES (?,1,?), (?,2,?), (?,3,?), (?,4,?), (?,5,?), (?,6,?), (?,7,?), (?,8,?), (?,9,?), (?,10,?)", [num, scores[0], num, scores[1], num, scores[2], num, scores[3], num, scores[4], num, scores[5], num, scores[6], num, scores[7], num, scores[8], num, scores[9]], function (err, res) {
-            takeDiff();
+           // takeDiff();
+           console.log("Inserted");
         });
 };
 
@@ -146,15 +112,7 @@ app.post("/api/friends", function (req, res) {
     var totalDifference;
 
     function takeDiff(){
-        for (var i = 0; i < friends.length; i++){
-            for (var p = 0; p < friends[i].scores; p++){
-                var sum = 0;    
-                    if (newUser.scores[p] !== friends[i].scores[p]){
-                        sum += Math.abs(newUser.scores[p] - friends[i].scores[p]);
-                    }
-                }
-            };
-
+        connection.query("")
         };
 });
 
