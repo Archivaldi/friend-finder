@@ -78,19 +78,11 @@ app.post("/api/friends", function (req, res) {
         parseInt(req.body.question9),
         parseInt(req.body.question10),
     ];
-    var newUser = {
-        name: name,
-        link: link,
-        scores: scores
-    };
-    
-    console.log(newUser);
 
     connection.query("INSERT INTO friends(friend_name, picture_link) VALUES (?, ?)", [name, link], function (err, res) {
-        takeNewFiendId(name, link);
-        // insertScores(scores);
+        takeNewFriendId(name, link);
     });
-    function takeNewFiendId(str,link) {
+    function takeNewFriendId(str,link) {
         connection.query("SELECT friend_id FROM friends WHERE friend_name = ? AND picture_link=?", [str,link], function (err, res) {
             insertScores(res[0].friend_id);
         });
@@ -98,21 +90,15 @@ app.post("/api/friends", function (req, res) {
 
     function insertScores(num) {
         connection.query("INSERT INTO scores (friend_id, question_id, score) VALUES (?,1,?), (?,2,?), (?,3,?), (?,4,?), (?,5,?), (?,6,?), (?,7,?), (?,8,?), (?,9,?), (?,10,?)", [num, scores[0], num, scores[1], num, scores[2], num, scores[3], num, scores[4], num, scores[5], num, scores[6], num, scores[7], num, scores[8], num, scores[9]], function (err, res) {
-           // takeDiff();
-           console.log("Inserted");
+            takeDiff(num);
         });
 };
 
-    var bestMatch = {
-        name: '',
-        photo: '',
-        friendDifference: Infinity
-    };
-
-    var totalDifference;
-
-    function takeDiff(){
-        connection.query("")
+    function takeDiff(num){
+        connection.query("SELECT SUM(score_difference) AS difference, friend_name, picture_link FROM (SELECT *, ABS(score-t2score) AS score_difference FROM (SELECT * FROM scores s1 LEFT JOIN (SELECT question_id AS t2question_id, friend_id AS t2friend_id, score AS t2score FROM scores s2) t2 ON t2question_id = s1.question_id) t3) t4 LEFT JOIN friends  ON t4.friend_id = friends.friend_id WHERE t2friend_id != ? GROUP BY friend_name, picture_link ORDER BY difference", [num], function (err, results){
+            console.log(results[0]["friend_name"]);
+            console.log(results[0]["picture_link"]);
+        });
         };
 });
 
