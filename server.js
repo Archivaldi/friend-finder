@@ -98,12 +98,6 @@ app.post("/api/friends", function (req, res) {
 
     function takeDiff(num){ 
         connection.query("SELECT * FROM (SELECT SUM(score_difference) ans_diff_total, friend_id, t2friend_id FROM (SELECT question_id, friend_id, t2friend_id, score_difference FROM  (SELECT *, ABS(score-t2score) AS score_difference FROM (SELECT * FROM scores s1 LEFT JOIN (SELECT question_id AS t2question_id, friend_id AS t2friend_id, score AS t2score FROM scores s2) t2 ON t2question_id = s1.question_id) t3) t4) t5 GROUP BY t2friend_id, friend_id) t6 LEFT JOIN friends  ON t2friend_id = friends.friend_id WHERE t6.friend_id = ? ORDER BY ans_diff_total", [num], function (err, results){
-           
-            // var bestMatch= {
-            //     name: results[1]["friend_name"],
-            //     link: results[1]["picture_link"]
-            // };
-            // console.log(bestMatch);
             res.render("result", {name:results[1]["friend_name"], link: results[1]["picture_link"]});
         });
         };
