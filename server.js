@@ -22,6 +22,8 @@ var bodyParser = require("body-parser");
 
 app.use(bodyParser.urlencoded({ extended: true }));
 
+app.use(express.static(__dirname + '/public'));
+
 
 
 // Creates the connection with the server and loads the product data upon a successful connection
@@ -34,7 +36,7 @@ connection.connect(function (err) {
 
 //create main route
 app.get("/", function (req, res) {
-    res.sendFile(path.join(__dirname, 'views/index.html'));
+    res.render("index");
 })
 
 //survey page
