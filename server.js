@@ -21,6 +21,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(express.static(__dirname + '/public'));
 
+var port = process.env.PORT || 8080;
 
 
 // Creates the connection with the server and loads the product data upon a successful connection
@@ -107,7 +108,7 @@ app.post("/api/friends", function (req, res) {
         };
 });
 
-//create server
-app.listen(3000, function () {
-    console.log("Server runs");
+//create server 8080
+app.listen(port, function () {
+    console.log("app running on port 8080");
 });
