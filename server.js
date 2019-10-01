@@ -13,12 +13,7 @@ const path = require("path");
 const mysql = require("mysql");
 
 //hiding private data 
-const connection = mysql.createConnection({
-    host: "localjost",
-    user: "root",
-    password: "password",
-    database: "shema"
-});
+const connection = mysql.createConnection(keys.data);
 
 var bodyParser = require("body-parser");
 
