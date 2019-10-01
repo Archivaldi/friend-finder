@@ -13,6 +13,7 @@
 
 <body>
     <div class="container">
+        <!-- ejs navbar template -->
             <% include ./partials/navbar %>
 
         <h1 class="text-center" style="font-weight: 800; margin-top: 20px; margin-bottom: 40px;">Survey Questions</h1>
@@ -29,6 +30,8 @@
             Avatar link: <br>
             <input type="text" name="link" class="info" required>
             <br><br>
+
+<!-- for loop for creating all questions from database -->
 
             <% for (var i = 0; i < res.length; i++){%>
             <h2>Question <%= i + 1%>:</h2>
