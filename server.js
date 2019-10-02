@@ -15,9 +15,9 @@ const mysql = require("mysql");
 
 //hiding private data 
 if (app.settings.env == 'development'){
-    mysql.createConnection(keys.data);
+    const connection = mysql.createConnection(keys.data);
 } else {
-  mysql.createConnection(process.env.JAWSDB_URL);
+   const connection = mysql.createConnection(process.env.JAWSDB_URL);
 }
 
 var bodyParser = require("body-parser");
