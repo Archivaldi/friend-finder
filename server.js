@@ -33,7 +33,9 @@ app.use(express.static(__dirname + '/public'));
 
 // Creates the connection with the server and loads the product data upon a successful connection
 connection.connect(function (err) {
-    if (err) throw err;
+    if (err) {
+        console.log(err);
+    }
     console.log("Database connected");
 });
 
