@@ -14,7 +14,11 @@ const path = require("path");
 const mysql = require("mysql");
 
 //hiding private data 
-const connection = mysql.createConnection(keys.data);
+if (app.settings.env == 'development'){
+    mysql.createConnection(keys.data);
+} else {
+  mysql.createConnection(process.env.JAWSDB_URL);
+}
 
 var bodyParser = require("body-parser");
 
@@ -23,7 +27,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(__dirname + '/public'));
 
 var port = process.env.PORT || 8080;
-
 
 // Creates the connection with the server and loads the product data upon a successful connection
 connection.connect(function (err) {
