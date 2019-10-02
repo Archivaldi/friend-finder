@@ -1,6 +1,7 @@
 exports.data = {
-    host: process.env.LOCAL_HOST_NAME,
-    user: process.env.USER,
-    password: process.env.PASSWORD,
-    database: process.env.DATABASE
+    host: process.env.Host,
+    user: process.env.Username,
+    password: process.env.Password,
+    database: process.env.Database,
+    port: process.env.Port
   };
