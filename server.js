@@ -5,8 +5,6 @@ app.set("view engine", "ejs");
 //add dotenv package for hiding private data
 require("dotenv").config();
 const keys = require("./keys.js");
-console.log(app.settings.env);
-console.log(keys.data);
 
 //path package
 const path = require("path");
@@ -14,17 +12,15 @@ const path = require("path");
 //mysql package
 const mysql = require("mysql");
 
-let connection;
-
 //hiding private data 
-if (app.settings.env == 'development'){
-     connection = mysql.createConnection(keys.data);
+//var connection = mysql.createConnection(keys.data);
+
+
+if (app.settings.env = "development"){
+    var connection = mysql.createConnection(keys.data);
 } else {
-   connection = mysql.createConnection(process.env.JAWSDB_URL);
-};
-
-console.log(connection);
-
+    var connection = mysql.createConnection(process.env.JAWSDB_URL);
+}
 
 var bodyParser = require("body-parser");
 
@@ -32,7 +28,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(express.static(__dirname + '/public'));
 
-var port = process.env.PORT || 8080;
+
 
 // Creates the connection with the server and loads the product data upon a successful connection
 connection.connect(function (err) {
@@ -118,7 +114,7 @@ app.post("/api/friends", function (req, res) {
         };
 });
 
-//create server 8080
-app.listen(port, function () {
-    console.log("app running on port 8080");
+//create server
+app.listen(3000, function () {
+    console.log("Server runs");
 });
