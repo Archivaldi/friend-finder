@@ -16,11 +16,12 @@ const mysql = require("mysql");
 //var connection = mysql.createConnection(keys.data);
 
 
-if (app.settings.env = "development"){
-    var connection = mysql.createConnection(keys.data);
-} else {
-    var connection = mysql.createConnection(process.env.JAWSDB_URL);
-}
+var connection = mysql.createConnection( process.argv.JAWSDB_URL || keys.data)
+// if (app.settings.env = "development"){
+//     var connection = mysql.createConnection(keys.data);
+// } else {
+//     var connection = mysql.createConnection(process.env.JAWSDB_URL);
+// }
 
 var bodyParser = require("body-parser");
 
@@ -32,9 +33,7 @@ app.use(express.static(__dirname + '/public'));
 
 // Creates the connection with the server and loads the product data upon a successful connection
 connection.connect(function (err) {
-    if (err) {
-        console.error("error connecting: " + err.stack);
-    }
+    if (err) throw 
     console.log("Database connected");
 });
 
