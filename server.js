@@ -5,6 +5,7 @@ app.set("view engine", "ejs");
 //add dotenv package for hiding private data
 require("dotenv").config();
 const keys = require("./keys.js");
+console.log(keys.data);
 
 //path package
 const path = require("path");
