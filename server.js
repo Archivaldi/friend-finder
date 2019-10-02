@@ -5,6 +5,7 @@ app.set("view engine", "ejs");
 //add dotenv package for hiding private data
 require("dotenv").config();
 const keys = require("./keys.js");
+console.log(app.settings.env);
 console.log(keys.data);
 
 //path package
@@ -13,12 +14,17 @@ const path = require("path");
 //mysql package
 const mysql = require("mysql");
 
+let connection;
+
 //hiding private data 
 if (app.settings.env == 'development'){
-    const connection = mysql.createConnection(keys.data);
+     connection = mysql.createConnection(keys.data);
 } else {
-   const connection = mysql.createConnection(process.env.JAWSDB_URL);
-}
+   connection = mysql.createConnection(process.env.JAWSDB_URL);
+};
+
+console.log(connection);
+
 
 var bodyParser = require("body-parser");
 
