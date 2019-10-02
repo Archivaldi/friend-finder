@@ -16,7 +16,7 @@ const mysql = require("mysql");
 //var connection = mysql.createConnection(keys.data);
 
 
-var connection = mysql.createConnection( process.argv.JAWSDB_URL || keys.data)
+var connection = mysql.createConnection( process.env.JAWSDB_URL || keys.data)
 // if (app.settings.env = "development"){
 //     var connection = mysql.createConnection(keys.data);
 // } else {
