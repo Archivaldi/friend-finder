@@ -17,11 +17,8 @@ const mysql = require("mysql");
 
 
 var connection = mysql.createConnection( process.env.JAWSDB_URL || keys.data)
-// if (app.settings.env = "development"){
-//     var connection = mysql.createConnection(keys.data);
-// } else {
-//     var connection = mysql.createConnection(process.env.JAWSDB_URL);
-// }
+console.log(process.env.JAWSDB_URL);  
+
 
 var bodyParser = require("body-parser");
 
