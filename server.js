@@ -17,7 +17,6 @@ const mysql = require("mysql");
 
 
 var connection = mysql.createConnection( process.env.JAWSDB_URL || keys.data)
-console.log(process.env.JAWSDB_URL);  
 
 
 var bodyParser = require("body-parser");
@@ -113,6 +112,6 @@ app.post("/api/friends", function (req, res) {
 });
 
 //create server
-app.listen(3000, function () {
+app.listen(process.env.PORT || 5000, function () {
     console.log("Server runs");
 });
