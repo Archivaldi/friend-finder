@@ -1,6 +1,8 @@
+[Heroku link](https://damp-bastion-19377.herokuapp.com/)
+
 # friend-finder
 
-Friend finder is an app that matches new person with people from database. New use should answer 10 questions. The app with MySQL queries compare every answer of new user with every answer of every user in database and canculate best match.
+Friend finder is an app that matches new person with people from database. New user should answer 10 questions. The app with MySQL queries compare every answer of new user with every answer of every user in database and canculate best match.
 
 ## Technologies Used
 
